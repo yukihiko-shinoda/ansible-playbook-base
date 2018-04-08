@@ -1,0 +1,9 @@
+- hosts: default
+  become: yes
+  roles:
+    - role: ansible-role-kernel-devel-amazon-linux
+      tags:
+        - kernel-devel
+    - role: ansible-role-guest-additions-centos
+      tags:
+        - guest-additions
