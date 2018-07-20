@@ -1,0 +1,8 @@
+---
+- name: check current version of GuestAdditions
+  shell: ls -1 /opt | grep VBoxGuestAdditions | cut -c 20-
+  register: version_guest_additions
+
+- name: uninstall old version of GuestAdditions
+  command: '/bin/sh /opt/VBoxGuestAdditions-{{ version_guest_additions.stdout }}/uninstall.sh'
+  when: version_guest_additions.stdout != guest_additions_version_on_host

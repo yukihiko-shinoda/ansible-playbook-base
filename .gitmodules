@@ -1,0 +1,3 @@
+[submodule "roles/ansible-role-cleaning-amazon-linux"]
+	path = roles/ansible-role-cleaning-amazon-linux
+	url = git@github.com:yukihiko-shinoda/ansible-role-cleaning-amazon-linux.git

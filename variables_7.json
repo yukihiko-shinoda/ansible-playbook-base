@@ -1,0 +1,4 @@
+{
+  "centos_version": "7",
+  "script_install_yum": "common-scripts/install_ansible_by_yum.sh"
+}

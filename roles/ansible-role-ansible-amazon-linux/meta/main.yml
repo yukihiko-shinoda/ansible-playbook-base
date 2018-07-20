@@ -1,0 +1,10 @@
+---
+dependencies:
+  - role: ansible-role-python-amazon-linux
+    vars:
+      pyenv_default_python_version: 2.7.12
+    when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+  - role: ansible-role-python-amazon-linux
+    vars:
+      python_install_pyenv: no
+    when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'

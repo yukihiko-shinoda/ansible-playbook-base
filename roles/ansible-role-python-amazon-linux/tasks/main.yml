@@ -1,0 +1,6 @@
+---
+- include_tasks: install_pyenv.yml
+  when: python_install_pyenv
+
+- include_tasks: install_pip.yml
+  when: not python_install_pyenv

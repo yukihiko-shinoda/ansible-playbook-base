@@ -1,21 +1,6 @@
 ---
-- name: mount iso GuestAdditions
-  mount:
-    fstype: iso9660
-    opts: loop
-    path: /mnt
-    src: /home/vagrant/VBoxGuestAdditions.iso
-    state: mounted
+- include_tasks: install_guest_additions.yml
+  when: not guest_additions_state_absent
 
-- name: install GuestAdditions
-  command: /bin/sh -x /mnt/VBoxLinuxAdditions.run
-
-- name: unmount iso GuestAdditions
-  mount:
-    path: /mnt
-    state: absent
-
-- name: remove iso GuestAdditions
-  file:
-    path: /home/vagrant/VBoxGuestAdditions.iso
-    state: absent
+- include_tasks: uninstall_guest_additions.yml
+  when: guest_additions_state_absent

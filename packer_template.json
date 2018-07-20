@@ -1,0 +1,79 @@
+{
+  "variables": {
+    "cloud_token": null,
+    "centos_version": "6",
+    "script_install_yum": "common-scripts/install_ansible_by_yum_from_epel.sh"
+  },
+  "builders": [
+    {
+      "type": "vagrant",
+      "box_name": "bento/centos-{{user `centos_version`}}",
+      "box_version": "201803.24.0",
+      "box_provider": "virtualbox",
+      "box_file": ".ovf",
+      "builder": {
+        "type": "virtualbox-ovf",
+        "headless": true,
+        "ssh_username": "vagrant",
+        "ssh_password": "vagrant",
+        "ssh_pty": true,
+        "shutdown_command": "echo '/sbin/halt -h -p' > /tmp/shutdown.sh; echo 'vagrant'|sudo -S sh '/tmp/shutdown.sh'"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "{{user `script_install_yum`}}"
+      ]
+    },{
+      "type": "ansible-local",
+      "playbook_file": "playbook_dummy.yml",
+      "playbook_dir": "./",
+      "staging_directory": "/tmp/packer-provisioner-ansible-local"
+    },{
+      "type": "shell",
+      "inline": [
+        "cd /tmp/packer-provisioner-ansible-local; ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook playbook.yml -vvv -c local -i inventories/common -t pip"
+      ]
+    },{
+      "type": "shell",
+      "scripts": [
+        "common-scripts/uninstall_ansible_by_yum.sh"
+      ]
+    },{
+      "type": "shell",
+      "scripts": [
+        "common-scripts/install_ansible_by_pip.sh"
+      ]
+    },{
+      "type": "shell",
+      "inline": [
+        "cd /tmp/packer-provisioner-ansible-local; ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook playbook.yml -vvv -c local -i inventories/common -t kernel-devel,guest-additions --extra-vars \"{guest_additions_version_on_host: '5.2.14', guest_additions_state_absent: yes}\"",
+        "sudo /sbin/shutdown -r now"
+      ],
+      "expect_disconnect": true
+    },{
+      "type": "shell",
+      "inline": [
+        "cd /tmp/packer-provisioner-ansible-local; ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook playbook.yml -vvv -c local -i inventories/common -t guest-additions,cleaning",
+        "sudo rm -rf /tmp/*"
+      ],
+      "pause_before": "15s"
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "vagrant",
+        "compression_level": 8
+      },{
+        "type": "vagrant-cloud",
+        "box_tag": "futureys/centos-{{user `centos_version`}}",
+        "access_token": "{{user `cloud_token`}}",
+        "version": "201807.09.0"
+      }
+    ]
+  ]
+}

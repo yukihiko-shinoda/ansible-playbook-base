@@ -1,0 +1,4 @@
+---
+dependencies:
+  - role: ansible-role-git-amazon-linux
+    when: python_install_pyenv

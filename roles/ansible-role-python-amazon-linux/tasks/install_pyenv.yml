@@ -1,0 +1,39 @@
+---
+- name: deploy pyenv
+  git:
+     repo: git://github.com/yyuu/pyenv.git
+     dest: /usr/local/pyenv
+
+- name: install libselinux-python to set profile
+  yum:
+    name: libselinux-python
+
+- name: set profile
+  template:
+    src: pyenv.sh.j2
+    dest: /etc/profile.d/pyenv.sh
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install patch to install python by pyenv
+  yum:
+    name: '{{ item }}'
+  with_items:
+    - patch
+    - gcc
+    - readline-devel
+    - zlib-devel
+    - bzip2
+    - bzip2-devel
+    - sqlite
+    - sqlite-devel
+    - openssl-devel
+
+- name: install default python
+  command: "bash -lc 'pyenv install {{ pyenv_default_python_version }}'"
+  args:
+    creates: "/usr/local/pyenv/versions/{{ pyenv_default_python_version }}"
+
+- name: set default python version
+  command: "bash -lc 'pyenv global {{ pyenv_default_python_version }}'"
