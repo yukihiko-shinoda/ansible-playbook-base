@@ -1,8 +1,9 @@
 ---
 - name: deploy pyenv
   git:
-     repo: git://github.com/yyuu/pyenv.git
-     dest: /usr/local/pyenv
+    repo: git://github.com/yyuu/pyenv.git
+    # Installation directory: @see http://www.itmedia.co.jp/help/howto/linux/0007master/14/04.html
+    dest: /opt/pyenv
 
 - name: install libselinux-python to set profile
   yum:
@@ -31,9 +32,9 @@
     - openssl-devel
 
 - name: install default python
-  command: "bash -lc 'pyenv install {{ pyenv_default_python_version }}'"
+  command: bash -lc 'pyenv install {{ python_pyenv_default_python_version }}'
   args:
-    creates: "/usr/local/pyenv/versions/{{ pyenv_default_python_version }}"
+    creates: /opt/pyenv/versions/{{ python_pyenv_default_python_version }}
 
 - name: set default python version
-  command: "bash -lc 'pyenv global {{ pyenv_default_python_version }}'"
+  command: bash -lc 'pyenv global {{ python_pyenv_default_python_version }}'

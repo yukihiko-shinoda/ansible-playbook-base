@@ -1,0 +1,47 @@
+{
+  "variables": {
+    "login_password": null
+  },
+  "builders": [
+    {
+      "type": "docker",
+      "image": "amazonlinux:1",
+      "commit": true
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "curl -kL https://bootstrap.pypa.io/get-pip.py | python",
+        "pip install ansible pexpect"
+      ]
+    },{
+      "type": "ansible-local",
+      "playbook_file": "playbook_dummy.yml",
+      "playbook_dir": "./",
+      "staging_directory": "/tmp/packer-provisioner-ansible-local"
+    },{
+      "type": "shell",
+      "inline": [
+        "cd /tmp/packer-provisioner-ansible-local; ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook playbook.yml -vvv -c local -i inventories/common -t cleaning",
+        "rm -rf /tmp/*"
+      ]
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "type": "docker-tag",
+        "repository": "futureys/amazonlinux",
+        "tag": "1.201807.22"
+      },
+      {
+        "type": "docker-push",
+        "login": true,
+        "login_username": "futureys",
+        "login_password": "{{user `login_password`}}"
+      }
+    ]
+  ]
+}

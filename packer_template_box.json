@@ -40,11 +40,7 @@
     },{
       "type": "shell",
       "scripts": [
-        "common-scripts/uninstall_ansible_by_yum.sh"
-      ]
-    },{
-      "type": "shell",
-      "scripts": [
+        "common-scripts/uninstall_ansible_by_yum.sh",
         "common-scripts/install_ansible_by_pip.sh"
       ]
     },{

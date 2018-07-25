@@ -3,19 +3,16 @@
   roles:
     - role: ansible-role-python-amazon-linux
       vars:
-        pyenv_default_python_version: 2.7.12
+        python_pyenv_default_python_version: 2.7.12
       tags:
         - pip
-      when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+      when: ansible_distribution == 'Amazon' or ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
     - role: ansible-role-python-amazon-linux
       vars:
         python_install_pyenv: no
       tags:
         - pip
       when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
-#    - role: ansible-role-ansible-amazon-linux
-#      tags:
-#        - ansible
     - role: ansible-role-kernel-devel-amazon-linux
       tags:
         - kernel-devel

@@ -1,9 +1,0 @@
----
-- name: install WANDisco yum repository to install latest version of git for CentOS 6
-  yum:
-    name: http://opensource.wandisco.com/centos/6/git/x86_64/wandisco-git-release-6-1.noarch.rpm
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
-
-- name: install git
-  yum:
-    name: git
