@@ -8,7 +8,7 @@
     {
       "type": "vagrant",
       "box_name": "bento/centos-{{user `centos_version`}}",
-      "box_version": "201803.24.0",
+      "box_version": "201808.24.0",
       "box_provider": "virtualbox",
       "box_file": ".ovf",
       "builder": {
@@ -46,7 +46,7 @@
     },{
       "type": "shell",
       "inline": [
-        "cd /tmp/packer-provisioner-ansible-local; ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook playbook.yml -vvv -c local -i inventories/common -t kernel-devel,guest-additions --extra-vars \"{guest_additions_version_on_host: '5.2.14', guest_additions_state_absent: yes}\"",
+        "cd /tmp/packer-provisioner-ansible-local; ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook playbook.yml -vvv -c local -i inventories/common -t kernel-devel,guest-additions --extra-vars \"{guest_additions_version_on_host: '5.2.22', guest_additions_state_absent: yes}\"",
         "sudo /sbin/shutdown -r now"
       ],
       "expect_disconnect": true
@@ -68,7 +68,7 @@
         "type": "vagrant-cloud",
         "box_tag": "futureys/centos-{{user `centos_version`}}",
         "access_token": "{{user `cloud_token`}}",
-        "version": "201807.09.0"
+        "version": "201812.14.0"
       }
     ]
   ]

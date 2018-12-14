@@ -9,6 +9,12 @@
   yum:
     name: libselinux-python
 
+- name: arrow sudo for pyenv to execute pip by sudo
+  replace:
+    dest: /etc/sudoers
+    regexp: '^Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin$'
+    replace: 'Defaults    secure_path = /opt/pyenv/shims:/opt/pyenv/bin:/sbin:/bin:/usr/sbin:/usr/bin'
+
 - name: set profile
   template:
     src: pyenv.sh.j2

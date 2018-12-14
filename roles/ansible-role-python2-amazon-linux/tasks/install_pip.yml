@@ -1,0 +1,18 @@
+---
+# @ see https://qiita.com/toshiya-i/items/4a0ba3b0924a5aec6585
+- name: check python version
+  shell: python --version 2>&1 | awk '{ print $2 }'
+  changed_when: false
+  ignore_errors: yes
+  register: python_version
+
+- name: download pip installer
+  uri:
+    url: '{{"https://bootstrap.pypa.io/2.6/get-pip.py" if python_version.stdout is version("2.7", "<") else "https://bootstrap.pypa.io/get-pip.py"}}'
+    dest: /tmp/get-pip.py
+    creates: /tmp/get-pip.py
+
+- name: install pip
+  command: python /tmp/get-pip.py
+  args:
+    creates: /bin/pip
