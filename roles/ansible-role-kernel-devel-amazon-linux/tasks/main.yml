@@ -7,8 +7,8 @@
     - kernel
     - kernel-headers
 
-- name: check current kernel version
-  command: uname -r
+- name: check updated kernel version
+  shell: yum list installed | grep kernel.x86_64 | tail -n1 | awk '{print $2}'
   register: kernel_version
 
 - name: install dependency of GuestAdditions
@@ -18,5 +18,4 @@
     - gcc
     - make
     - perl
-    - kernel-devel
-#    - 'kernel-devel-{{ kernel_version.stdout }}'
+    - 'kernel-devel-{{ kernel_version.stdout }}'

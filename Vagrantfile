@@ -12,7 +12,6 @@ Vagrant.configure(2) do |config|
   config.vm.box_version = "201808.24.0"
   config.vbguest.no_install = true
   config.vm.synced_folder ".", "/vagrant"
-  config.vm.synced_folder "C:\\Program Files\\Oracle\\VirtualBox", "/VirtualBox"
   config.vm.network "public_network"
   config.vm.provider "virtualbox" do |vm|
     vm.memory = 2048
@@ -30,7 +29,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "ansible-yum-absent", type: "shell", path: "common-scripts/uninstall_ansible_by_yum.sh"
   config.vm.provision "ansible-pip", type: "shell", path: "common-scripts/install_ansible_by_pip.sh"
 
-  config.vm.provision "iso", type: "shell", inline: "cp -ipf /VirtualBox/VBoxGuestAdditions.iso /home/vagrant/VBoxGuestAdditions.iso"
+  config.vm.provision "iso", type: "file", source: "C:\\Program Files\\Oracle\\VirtualBox/VBoxGuestAdditions.iso", destination: "/home/vagrant/VBoxGuestAdditions.iso"
   config.vm.provision "kernel-devel", type: "ansible_local" do |ansible|
     ansible.install           = false
     ansible.inventory_path    = "inventories/common"

@@ -68,7 +68,7 @@
         "type": "vagrant-cloud",
         "box_tag": "futureys/centos-{{user `centos_version`}}",
         "access_token": "{{user `cloud_token`}}",
-        "version": "201812.14.0"
+        "version": "201812.16.0"
       }
     ]
   ]
