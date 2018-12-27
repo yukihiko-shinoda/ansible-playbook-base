@@ -4,23 +4,23 @@
   pre_tasks:
     - set_fact:
         python_install_pyenv: yes
-      when: ansible_distribution == 'Amazon' or ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+      when: ansible_distribution == 'Amazon' and ansible_service_mgr == 'upstart' or ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
     - set_fact:
         python_install_pyenv: no
-      when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+      when: ansible_distribution == 'Amazon' and ansible_service_mgr == 'sysvinit' or ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
   roles:
     - role: ansible-role-python2-amazon-linux
       vars:
         python_pyenv_default_python_version: 2.7.15
       tags:
         - pip
-      when: ansible_distribution == 'Amazon' or ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+      when: ansible_distribution == 'Amazon' and ansible_service_mgr == 'upstart' or ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
     - role: ansible-role-python2-amazon-linux
 #      vars:
 #        python_install_pyenv: no
       tags:
         - pip
-      when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+      when: ansible_distribution == 'Amazon' and ansible_service_mgr == 'sysvinit' or ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
     - role: ansible-role-kernel-devel-amazon-linux
       tags:
         - kernel-devel

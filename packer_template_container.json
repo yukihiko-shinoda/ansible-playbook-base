@@ -5,7 +5,7 @@
   "builders": [
     {
       "type": "docker",
-      "image": "amazonlinux:1",
+      "image": "amazonlinux:2.0.20181114",
       "commit": true
     }
   ],
@@ -34,7 +34,7 @@
       {
         "type": "docker-tag",
         "repository": "futureys/amazonlinux",
-        "tag": "1.201807.22"
+        "tag": "2.201812.26"
       },
       {
         "type": "docker-push",
