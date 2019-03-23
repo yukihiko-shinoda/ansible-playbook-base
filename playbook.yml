@@ -21,12 +21,12 @@
       tags:
         - pip
       when: ansible_distribution == 'Amazon' and ansible_service_mgr == 'sysvinit' or ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
-    - role: ansible-role-kernel-devel-amazon-linux
-      tags:
-        - kernel-devel
     - role: ansible-role-guest-additions-centos
       tags:
         - guest-additions
+    - role: ansible-role-kernel-devel-amazon-linux
+      tags:
+        - kernel-devel
     - role: ansible-role-cleaning-amazon-linux
       tags:
         - cleaning

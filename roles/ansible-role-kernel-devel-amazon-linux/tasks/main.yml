@@ -1,11 +1,10 @@
 ---
 - name: update kernel-headers
   yum:
-    name: "{{ item }}"
+    name:
+      - kernel
+      - kernel-headers
     state: latest
-  with_items:
-    - kernel
-    - kernel-headers
 
 - name: check updated kernel version
   shell: yum list installed | grep kernel.x86_64 | tail -n1 | awk '{print $2}'
@@ -13,9 +12,12 @@
 
 - name: install dependency of GuestAdditions
   yum:
-    name: '{{ item }}'
-  with_items:
-    - gcc
-    - make
-    - perl
-    - 'kernel-devel-{{ kernel_version.stdout }}'
+    name:
+      - gcc
+      - make
+      - perl
+      - kernel-devel-{{ kernel_version.stdout }}
+
+- name: ensure that kernel correctly installed
+  file:
+    path: /boot/initramfs-{{ kernel_version.stdout }}.x86_64.img

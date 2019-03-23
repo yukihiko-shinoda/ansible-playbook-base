@@ -25,17 +25,16 @@
 
 - name: install patch to install python by pyenv
   yum:
-    name: '{{ item }}'
-  with_items:
-    - patch
-    - gcc
-    - readline-devel
-    - zlib-devel
-    - bzip2
-    - bzip2-devel
-    - sqlite
-    - sqlite-devel
-    - openssl-devel
+    name:
+      - patch
+      - gcc
+      - readline-devel
+      - zlib-devel
+      - bzip2
+      - bzip2-devel
+      - sqlite
+      - sqlite-devel
+      - openssl-devel
 
 - name: install default python
   command: bash -lc 'pyenv install {{ python_pyenv_default_python_version }}'

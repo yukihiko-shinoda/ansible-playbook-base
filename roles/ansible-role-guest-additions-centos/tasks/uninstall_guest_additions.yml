@@ -3,6 +3,10 @@
   shell: ls -1 /opt | grep VBoxGuestAdditions | cut -c 20-
   register: version_guest_additions
 
+# @see https://stackoverflow.com/a/47449216
 - name: uninstall old version of GuestAdditions
   command: '/bin/sh /opt/VBoxGuestAdditions-{{ version_guest_additions.stdout }}/uninstall.sh'
+  register: cmd_res
+  retries: 1
+  until: cmd_res.stdout_lines | reject('search','^run') | list | count == 0
   when: version_guest_additions.stdout != '' and version_guest_additions.stdout != guest_additions_version_on_host

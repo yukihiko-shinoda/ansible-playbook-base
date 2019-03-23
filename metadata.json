@@ -1,0 +1,10 @@
+{
+    "name": "futureys/centos-7",
+    "versions": [{
+        "version": "201903.21.0",
+        "providers": [{
+        	"name": "virtualbox",
+            "url": "packer_vagrant_virtualbox.box"
+        }]
+    }]
+}

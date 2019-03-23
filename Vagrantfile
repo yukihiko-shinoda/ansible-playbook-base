@@ -9,7 +9,7 @@ Vagrant.configure(2) do |config|
     centos_7.vm.provision "ansible-yum", type: "shell", preserve_order: true, path: "common-scripts/install_ansible_by_yum.sh"
   end
 
-  config.vm.box_version = "201808.24.0"
+  config.vm.box_version = "201812.27.0"
   config.vbguest.no_install = true
   config.vm.synced_folder ".", "/vagrant"
   config.vm.network "public_network"
@@ -35,7 +35,7 @@ Vagrant.configure(2) do |config|
     ansible.inventory_path    = "inventories/common"
     ansible.limit             = "all"
     ansible.playbook          = "playbook.yml"
-    ansible.tags              = "kernel-devel,guest-additions"
+    ansible.tags              = "guest-additions,kernel-devel"
     ansible.verbose           = "vvv"
     ansible.extra_vars        = {
         guest_additions_version_on_host: `vboxmanage --version`.split("r")[0],
