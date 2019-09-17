@@ -11,7 +11,7 @@
   roles:
     - role: ansible-role-python2-amazon-linux
       vars:
-        python_pyenv_default_python_version: 2.7.15
+        python_pyenv_default_python_version: 2.7.16
       tags:
         - pip
       when: ansible_distribution == 'Amazon' and ansible_service_mgr == 'upstart' or ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'

@@ -9,7 +9,7 @@ Vagrant.configure(2) do |config|
     centos_7.vm.provision "ansible-yum", type: "shell", preserve_order: true, path: "common-scripts/install_ansible_by_yum.sh"
   end
 
-  config.vm.box_version = "201812.27.0"
+  config.vm.box_version = "201907.24.0"
   config.vbguest.no_install = true
   config.vm.synced_folder ".", "/vagrant"
   config.vm.network "public_network"
