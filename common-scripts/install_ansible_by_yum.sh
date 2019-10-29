@@ -1,2 +1,2 @@
 #!/bin/bash -eu
-sudo yum install -y ansible
+sudo yum install -y ansible pexpect

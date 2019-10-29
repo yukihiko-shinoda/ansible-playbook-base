@@ -5,7 +5,7 @@
   "builders": [
     {
       "type": "docker",
-      "image": "amazonlinux:2.0.20181114",
+      "image": "amazonlinux:2.0.20191016.0",
       "commit": true
     }
   ],
@@ -13,8 +13,8 @@
     {
       "type": "shell",
       "inline": [
-        "curl -kL https://bootstrap.pypa.io/get-pip.py | python",
-        "pip install ansible pexpect"
+        "yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm",
+        "yum install -y ansible"
       ]
     },{
       "type": "ansible-local",
@@ -24,7 +24,18 @@
     },{
       "type": "shell",
       "inline": [
-        "cd /tmp/packer-provisioner-ansible-local; ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook playbook.yml -vvv -c local -i inventories/common -t cleaning",
+        "cd /tmp/packer-provisioner-ansible-local; ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook playbook.yml -vvv -c local -i inventories/common -t pip"
+      ]
+    },{
+      "type": "shell",
+      "inline": [
+        "yum remove -y ansible",
+        "bash -lc 'pip install ansible pexpect'"
+      ]
+    },{
+      "type": "shell",
+      "inline": [
+        "cd /tmp/packer-provisioner-ansible-local; ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 bash -lc 'ansible-playbook playbook.yml -vvv -c local -i inventories/common -t cleaning'",
         "rm -rf /tmp/*"
       ]
     }
@@ -34,7 +45,7 @@
       {
         "type": "docker-tag",
         "repository": "futureys/amazonlinux",
-        "tag": "2.201812.26"
+        "tag": "2.201910.29"
       },
       {
         "type": "docker-push",

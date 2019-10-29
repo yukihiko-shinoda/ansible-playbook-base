@@ -1,7 +1,7 @@
 ---
 - name: deploy pyenv
   git:
-    repo: git://github.com/yyuu/pyenv.git
+    repo: git://github.com/pyenv/pyenv.git
     # Installation directory: @see http://www.itmedia.co.jp/help/howto/linux/0007master/14/04.html
     dest: /opt/pyenv
 
@@ -9,11 +9,12 @@
   yum:
     name: libselinux-python
 
-- name: arrow sudo for pyenv to execute pip by sudo
+- name: arrow sudo for pyenv to execute pip by sudo when it's not Amazon Linux container
   replace:
     dest: /etc/sudoers
     regexp: '^Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin$'
     replace: 'Defaults    secure_path = /opt/pyenv/shims:/opt/pyenv/bin:/sbin:/bin:/usr/sbin:/usr/bin'
+  when: ansible_distribution != 'Amazon' or ansible_service_mgr != 'sysvinit'
 
 - name: set profile
   template:
@@ -23,18 +24,22 @@
     group: root
     mode: 0644
 
-- name: install patch to install python by pyenv
+- name: install dependencies to install python by pyenv
   yum:
     name:
-      - patch
+      - make
       - gcc
-      - readline-devel
       - zlib-devel
       - bzip2
       - bzip2-devel
+      - readline-devel
       - sqlite
       - sqlite-devel
       - openssl-devel
+      - tk-devel
+      - libffi-devel
+      # /opt/pyenv/plugins/python-build/bin/python-build: line 425: tar: command not found
+      - tar
 
 - name: install default python
   command: bash -lc 'pyenv install {{ python_pyenv_default_python_version }}'
