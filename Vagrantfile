@@ -2,14 +2,25 @@ Dotenv.load
 Vagrant.configure(2) do |config|
   config.vm.define "6" do |centos_6|
     centos_6.vm.box = "bento/centos-6"
+    centos_6.vm.provision "ansible-yum", type: "shell", preserve_order: true, path: "common-scripts/install_ansible_by_yum_from_epel.sh"
   end
 
   config.vm.define "7" do |centos_7|
     centos_7.vm.box = "bento/centos-7"
-    centos_7.vm.provision "ansible-yum", type: "shell", preserve_order: true, path: "common-scripts/install_ansible_by_yum.sh"
+    centos_7.vm.box_version = "201910.20.1"
   end
 
-  config.vm.box_version = "201907.24.0"
+  config.vm.define "8" do |centos_8|
+    centos_8.vm.box = "bento/centos-8"
+    centos_8.vm.provision "ansible-yum", type: "shell", preserve_order: true, path: "common-scripts/install_ansible_by_yum_from_epel_playground.sh"
+  end
+
+  config.vm.define "a2" do |amazon_linux_2|
+    amazon_linux_2.vm.box = "bento/amazonlinux-2"
+    amazon_linux_2.vm.box_version = "1.0.0"
+  end
+
+  config.vm.box_version = "201910.20.0"
   config.vbguest.no_install = true
   config.vm.synced_folder ".", "/vagrant"
   config.vm.network "public_network"
@@ -17,7 +28,7 @@ Vagrant.configure(2) do |config|
     vm.memory = 2048
   end
 
-  config.vm.provision "ansible-yum", type: "shell", path: "common-scripts/install_ansible_by_yum_from_epel.sh"
+  config.vm.provision "ansible-yum", type: "shell", path: "common-scripts/install_ansible_by_yum.sh"
   config.vm.provision "pip", type: "ansible_local" do |ansible|
     ansible.install           = false
     ansible.inventory_path    = "inventories/common"
@@ -35,6 +46,7 @@ Vagrant.configure(2) do |config|
     ansible.inventory_path    = "inventories/common"
     ansible.limit             = "all"
     ansible.playbook          = "playbook.yml"
+    ansible.playbook_command  = "sudo ansible-playbook"
     ansible.tags              = "guest-additions,kernel-devel"
     ansible.verbose           = "vvv"
     ansible.extra_vars        = {
@@ -49,6 +61,7 @@ Vagrant.configure(2) do |config|
     ansible.inventory_path    = "inventories/common"
     ansible.limit             = "all"
     ansible.playbook          = "playbook.yml"
+    ansible.playbook_command  = "sudo ansible-playbook"
     ansible.tags              = "guest-additions"
     ansible.verbose           = "vvv"
     ansible.provisioning_path = "/tmp/ansible"

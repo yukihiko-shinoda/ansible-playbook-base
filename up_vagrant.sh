@@ -2,7 +2,7 @@
 
 vagrant halt ${1}
 vagrant destroy -f ${1}
-vagrant up --provision-with ansible-yum,pip,ansible-yum-absent,ansible-pip,iso,kernel-devel ${1}
+vagrant up --provision-with ansible-yum,iso,kernel-devel ${1}
 set +e
 vagrant reload ${1}
 set -e

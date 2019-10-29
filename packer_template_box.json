@@ -1,14 +1,14 @@
 {
   "variables": {
     "cloud_token": null,
-    "centos_version": "6",
-    "script_install_yum": "common-scripts/install_ansible_by_yum_from_epel.sh"
+    "centos_version": "8",
+    "script_install_yum": "common-scripts/install_ansible_by_yum_from_epel_playground.sh"
   },
   "builders": [
     {
       "type": "vagrant",
       "box_name": "bento/centos-{{user `centos_version`}}",
-      "box_version": "201907.24.0",
+      "box_version": "201910.20.0",
       "box_provider": "virtualbox",
       "box_file": ".ovf",
       "builder": {
@@ -35,17 +35,6 @@
     },{
       "type": "shell",
       "inline": [
-        "cd /tmp/packer-provisioner-ansible-local; ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook playbook.yml -vvv -c local -i inventories/common -t pip"
-      ]
-    },{
-      "type": "shell",
-      "scripts": [
-        "common-scripts/uninstall_ansible_by_yum.sh",
-        "common-scripts/install_ansible_by_pip.sh"
-      ]
-    },{
-      "type": "shell",
-      "inline": [
         "cd /tmp/packer-provisioner-ansible-local; ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook playbook.yml -vvv -c local -i inventories/common -t guest-additions,kernel-devel --extra-vars \"{guest_additions_version_on_host: '6.0.14', guest_additions_state_absent: yes}\"",
         "sudo /sbin/shutdown -r now"
       ],
@@ -68,7 +57,7 @@
         "type": "vagrant-cloud",
         "box_tag": "futureys/centos-{{user `centos_version`}}",
         "access_token": "{{user `cloud_token`}}",
-        "version": "201910.17.0"
+        "version": "201910.26.0"
       }
     ]
   ]

@@ -1,0 +1,4 @@
+{
+  "centos_version": "6",
+  "script_install_yum": "common-scripts/install_ansible_by_yum_from_epel.sh"
+}

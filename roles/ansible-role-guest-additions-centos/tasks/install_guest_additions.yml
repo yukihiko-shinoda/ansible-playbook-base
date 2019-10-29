@@ -1,4 +1,9 @@
 ---
+# @see https://askubuntu.com/questions/169024/how-can-i-tell-if-the-virtualbox-guest-additions-were-installed-on-an-ubuntu-vm
+- name: check whether GuestAdditions is installed or not
+  shell: lsmod | grep vboxguest
+  register: module_guest_additions
+
 - name: mount iso GuestAdditions
   mount:
     fstype: iso9660
@@ -6,9 +11,11 @@
     path: /mnt
     src: /home/vagrant/VBoxGuestAdditions.iso
     state: mounted
+  when: module_guest_additions.rc != 0
 
 - name: install GuestAdditions
   command: /bin/sh -x /mnt/VBoxLinuxAdditions.run
+  when: module_guest_additions.rc != 0
 
 - name: unmount iso GuestAdditions
   mount:

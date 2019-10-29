@@ -1,0 +1,11 @@
+---
+- name: download pip installer
+  uri:
+    url: https://bootstrap.pypa.io/get-pip.py
+    dest: /tmp/get-pip.py
+    creates: /tmp/get-pip.py
+
+- name: install pip
+  command: python3 /tmp/get-pip.py --user
+  args:
+    creates: /usr/bin/pip3
