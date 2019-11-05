@@ -1,7 +1,7 @@
 ---
 all:
   children:
-    common:
+    container:
       hosts:
         default:
           ansible_connection: local

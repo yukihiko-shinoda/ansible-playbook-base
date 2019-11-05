@@ -14,7 +14,7 @@
     dest: /etc/sudoers
     regexp: '^Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin$'
     replace: 'Defaults    secure_path = /opt/pyenv/shims:/opt/pyenv/bin:/sbin:/bin:/usr/sbin:/usr/bin'
-  when: ansible_distribution != 'Amazon' or ansible_service_mgr != 'sysvinit'
+  when: '"container" not in group_names'
 
 - name: set profile
   template:
@@ -24,7 +24,8 @@
     group: root
     mode: 0644
 
-- name: install dependencies to install python by pyenv
+# @see https://github.com/pyenv/pyenv/wiki/common-build-problems
+- name: install dependencies to install python by pyenv for Fedora/CentOS/RHEL(aws ec2)
   yum:
     name:
       - make

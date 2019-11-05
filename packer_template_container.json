@@ -1,20 +1,26 @@
 {
   "variables": {
-    "login_password": null
+    "login_password": null,
+    "image": "amazonlinux:2.0.20191016.0",
+    "script_install_yum": "common-scripts/install_ansible_by_yum_from_epel.sh"
   },
   "builders": [
     {
       "type": "docker",
-      "image": "amazonlinux:2.0.20191016.0",
-      "commit": true
+      "image": "{{user `image`}}",
+      "commit": true,
+      "changes": [
+        "ENV PYENV_ROOT /opt/pyenv",
+        "ENV PATH /opt/pyenv/shims:${PYENV_ROOT}/bin:${PATH}",
+        "ENTRYPOINT [\"/bin/bash\", \"-l\"]"
+      ]
     }
   ],
   "provisioners": [
     {
       "type": "shell",
-      "inline": [
-        "yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm",
-        "yum install -y ansible"
+      "scripts": [
+        "{{user `script_install_yum`}}"
       ]
     },{
       "type": "ansible-local",
@@ -24,18 +30,18 @@
     },{
       "type": "shell",
       "inline": [
-        "cd /tmp/packer-provisioner-ansible-local; ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook playbook.yml -vvv -c local -i inventories/common -t pip"
+        "cd /tmp/packer-provisioner-ansible-local; ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 ansible-playbook playbook.yml -vvv -c local -i inventories/container -t pip"
+      ]
+    },{
+      "type": "shell",
+      "scripts": [
+        "common-scripts/uninstall_ansible_by_yum.sh",
+        "common-scripts/install_ansible_by_pip.sh"
       ]
     },{
       "type": "shell",
       "inline": [
-        "yum remove -y ansible",
-        "bash -lc 'pip install ansible pexpect'"
-      ]
-    },{
-      "type": "shell",
-      "inline": [
-        "cd /tmp/packer-provisioner-ansible-local; ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 bash -lc 'ansible-playbook playbook.yml -vvv -c local -i inventories/common -t cleaning'",
+        "cd /tmp/packer-provisioner-ansible-local; ANSIBLE_FORCE_COLOR=1 PYTHONUNBUFFERED=1 bash -lc 'ansible-playbook playbook.yml -vvv -c local -i inventories/container -t cleaning'",
         "rm -rf /tmp/*"
       ]
     }
@@ -45,7 +51,7 @@
       {
         "type": "docker-tag",
         "repository": "futureys/amazonlinux",
-        "tag": "2.201910.29"
+        "tag": "2.201911.01"
       },
       {
         "type": "docker-push",
