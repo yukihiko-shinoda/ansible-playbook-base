@@ -7,7 +7,6 @@ Vagrant.configure(2) do |config|
 
   config.vm.define "7" do |centos_7|
     centos_7.vm.box = "bento/centos-7"
-    centos_7.vm.box_version = "201910.20.1"
   end
 
   config.vm.define "8" do |centos_8|
@@ -20,10 +19,10 @@ Vagrant.configure(2) do |config|
     amazon_linux_2.vm.box_version = "1.0.0"
   end
 
-  config.vm.box_version = "201910.20.0"
+  config.vm.box_version = "202002.04.0"
   config.vbguest.no_install = true
   config.vm.synced_folder ".", "/vagrant"
-  config.vm.network "public_network"
+  config.vm.network "public_network", bridge: "Realtek PCIe GBE Family Controller"
   config.vm.provider "virtualbox" do |vm|
     vm.memory = 2048
   end

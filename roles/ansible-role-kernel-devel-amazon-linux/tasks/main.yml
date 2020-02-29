@@ -1,10 +1,11 @@
 ---
-- name: update kernel-headers
-  yum:
-    name:
-      - kernel
-      - kernel-headers
-    state: latest
+# bento/centos-8 v202002.04.0 doesn't work with latest version of kernel when restart.
+#- name: update kernel-headers
+#  yum:
+#    name:
+#      - kernel
+#      - kernel-headers
+#    state: latest
 
 - name: check updated kernel version
   shell: yum list installed | grep kernel.x86_64 | tail -n1 | awk '{print $2}'

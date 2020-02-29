@@ -1,7 +1,7 @@
 {
     "name": "futureys/centos-8",
     "versions": [{
-        "version": "201910.26.0",
+        "version": "202002.17.0",
         "providers": [{
         	"name": "virtualbox",
             "url": "packer_vagrant_virtualbox.box"
