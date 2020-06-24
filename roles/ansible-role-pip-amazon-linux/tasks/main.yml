@@ -9,3 +9,7 @@
   command: bash -cl 'python /tmp/get-pip.py'
   args:
     creates: /usr/bin/pip
+
+- name: Upgrade pip
+  command: bash -cl 'python -m pip install --upgrade pip'
+  
