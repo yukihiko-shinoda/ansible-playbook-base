@@ -3,6 +3,7 @@
 - name: check whether GuestAdditions is installed or not
   shell: lsmod | grep vboxguest
   register: module_guest_additions
+  ignore_errors: yes
 
 - name: mount iso GuestAdditions
   mount:
