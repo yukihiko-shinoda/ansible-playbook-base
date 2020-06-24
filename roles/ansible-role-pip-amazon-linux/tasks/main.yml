@@ -6,6 +6,6 @@
     creates: /tmp/get-pip.py
 
 - name: install pip
-  command: python /tmp/get-pip.py
+  command: bash -cl 'python /tmp/get-pip.py'
   args:
     creates: /usr/bin/pip
